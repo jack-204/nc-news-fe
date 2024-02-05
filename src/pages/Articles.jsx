@@ -7,7 +7,7 @@ export default function Articles () {
     console.log(topic)
     return (
         <>
-            <p>this is the articles page</p>
+            <p className="p-2">this is the articles page</p>
         </>
     )
 }

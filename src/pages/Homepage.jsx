@@ -1,7 +1,7 @@
 export default function Homepage () {
     return(
         <>
-            <p>
+            <p className="p-2">
                 Welcome to NC-news!
             </p>
         </>
