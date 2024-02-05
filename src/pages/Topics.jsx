@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 export default function Topics () {
     return (
         <>
-        <p>this is the topics page</p>
-        <ul>
+        <p className="p-2">this is the topics page</p>
+        <ul className="p-2">
             <li key="t1">
                 <Link to="/articles?topic=t1">
                     <span>t1</span>
