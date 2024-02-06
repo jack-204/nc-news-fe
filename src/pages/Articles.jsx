@@ -8,14 +8,16 @@ export default function Articles () {
 
     const [articles, setArticles] = useState([])
 
+    const newsApi = axios.create({
+        baseURL: 'https://nc-news-p6kr.onrender.com/api/articles'
+    })
 
     const topic = searchParams.get('topic')
 
     useEffect(() => {
         const getArticles = async () => {
             try {
-                let url = `https://nc-news-p6kr.onrender.com/api/articles`
-                const response = await axios.get(url)
+                const response = await newsApi.get()
                 setArticles(response.data.articles)
             }catch(err) {
                 console.log(err)
@@ -28,6 +30,7 @@ export default function Articles () {
     return (
         <>
             <h1 className="p-2">this is the articles page</h1>
+            {articles.length === 0 ? <p className="p-2">loading...</p> : <></>}
             <ul>
                 {articles.map((article) => {
                     return (
