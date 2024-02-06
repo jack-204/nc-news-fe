@@ -21,6 +21,7 @@ export default function ArticleTile ({article}) {
                 <p >{article.title}</p>
                 <p>{article.author}</p>
                 <p>{date}, {time}</p>
+                <p>votes: {article.votes}</p>
             </div>
         </li>
     )
