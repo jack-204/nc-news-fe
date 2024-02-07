@@ -2,22 +2,19 @@ import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import axios from "axios"
 import ArticleTile from "../components/ArticleTile"
+import api from "../utils/api";
 
 export default function Articles () {
     const [searchParams, setSearchParams] = useSearchParams()
 
     const [articles, setArticles] = useState([])
 
-    const newsApi = axios.create({
-        baseURL: 'https://nc-news-p6kr.onrender.com/api/articles'
-    })
-
     const topic = searchParams.get('topic')
 
     useEffect(() => {
         const getArticles = async () => {
             try {
-                const response = await newsApi.get()
+                const response = await api.get('articles')
                 setArticles(response.data.articles)
             }catch(err) {
                 console.log(err)
@@ -30,7 +27,7 @@ export default function Articles () {
     return (
         <>
             <h1 className="p-2">this is the articles page</h1>
-            {articles.length === 0 ? <p className="p-2">loading...</p> : <></>}
+            {articles.length === 0 ? <p className="p-2">loading articles...</p> : <></>}
             <ul>
                 {articles.map((article) => {
                     return (
