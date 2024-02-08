@@ -7,7 +7,7 @@ import { getAllArticles } from "../utils/api";
 export default function Articles () {
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate();
-    
+    const [articlesError, setArticlesError] = useState(0)
     const [order, setOrder] = useState('desc')
 
     const [articles, setArticles] = useState([])
@@ -56,6 +56,8 @@ export default function Articles () {
                 <option value="votes">votes</option>
             </select>
             <button onClick={() => handleOrderChange()}>change order asc/desc</button>
+            {articles === undefined ? <p>No articles found for this topic</p> : <>
+            
             {articles.length === 0 ? <p className="p-2">loading articles...</p> : <></>}
             <ul>
                 {articles.map((article) => {
@@ -64,6 +66,7 @@ export default function Articles () {
                     )
                 })}
             </ul>
+            </>}
         </>
     )
 }

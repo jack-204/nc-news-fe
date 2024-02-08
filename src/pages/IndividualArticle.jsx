@@ -12,6 +12,8 @@ export default function IndividualArticle () {
     
     const [voteError, setVoteError] = useState('')
 
+    const [articleNotFound, setArticleNotFound] = useState(0)
+
     //increment votes handling
     const changeVote = (amount) => {
         const newvotes = {...articleData}
@@ -44,6 +46,7 @@ export default function IndividualArticle () {
                 setArticleData(response.data.article)
             } catch(err){
                 console.log(err)
+                setArticleNotFound(1)
             }
         }
         getArticle()
@@ -86,9 +89,14 @@ export default function IndividualArticle () {
         postComment()
     }
 
-
+    
+    if (articleNotFound === 1){
+        return (<>
+        <p>Error 404: Article not found</p>
+        </>)
+    }
     return(
-        <>
+    <>
         {articleData.title === undefined ? <p className="p-2">loading article...</p> : <></>}
         <h1 className="text-xl py-2 text-center">{articleData.title}</h1>
         <h2 className="text-center">{articleData.author}</h2>
