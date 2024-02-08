@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import api from "../utils/api";
+import {getAllTopics} from "../utils/api";
 
 export default function Topics () {
     const [topics, setTopics] = useState([])
     useEffect(() => {
         const getTopics = async () => {
             try {
-                const response = await api.get('/topics')
+                const response = await getAllTopics()
                 setTopics(response.data.topics)
             } catch(err) {
                 console.log(err)

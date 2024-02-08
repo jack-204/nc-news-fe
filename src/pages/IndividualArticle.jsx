@@ -1,16 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-import axios from "axios"
 import CommentTile from "../components/CommentTile";
 import { UserContext } from "../context/UserContext";
-import api from "../utils/api";
+import {incrementVotes, getIndividualArticle, getCommentsForArticle, postNewComment} from "../utils/api";
+import CommentBox from "../components/CommentBox";
 
 export default function IndividualArticle () {
     const username = useContext(UserContext)
 
     const {article_id} = useParams()
-
+    
     const [voteError, setVoteError] = useState('')
+
     //increment votes handling
     const changeVote = (amount) => {
         const newvotes = {...articleData}
@@ -18,8 +19,7 @@ export default function IndividualArticle () {
         setVoteError('')
         const updateVotes = async (amount) => {
             try {
-                const response = await api.patch(`articles/${article_id}`, {inc_votes: amount})
-
+                incrementVotes(amount, article_id)
             } catch(err){
                 console.log(err)
                 setVoteError('something went wrong, please try again')
@@ -38,27 +38,30 @@ export default function IndividualArticle () {
 
     //loads up the article and comments
     useEffect(() => {
-        const getIndividualArticle = async () => {
-            try {
-                const response = await api.get(`articles/${article_id}`)
+        const getArticle = async () => {
+            try{
+                const response = await getIndividualArticle(article_id)
                 setArticleData(response.data.article)
-            }catch(err){
+            } catch(err){
                 console.log(err)
             }
         }
+        getArticle()
 
         const getComments = async () => {
             try {
-                const response = await api.get(`articles/${article_id}/comments`)
+                const response = await getCommentsForArticle(article_id)
                 setComments(response.data.comments.reverse())
             }catch(err){
                 console.log(err)
             }
         }
-        getIndividualArticle()
         getComments()
     },[])
+
     const [loadingNewComment, setLoadingNewComment] = useState(0)
+
+    const [postComment, setPostComment] = useState('')
 
     //submit comment handling
     const handleSubmit = (event) => {
@@ -67,10 +70,12 @@ export default function IndividualArticle () {
             body: event.target[0].value,
             username: username
         }
+        setPostComment('')
+
         const postComment = async () => {
             try{
                 setLoadingNewComment(1)
-                const response = await api.post(`/articles/${article_id}/comments`, newComment)
+                const response = await postNewComment(article_id, newComment)
                 let postedCommentArray = [ response.data.comment, ...comments]
                 setComments(postedCommentArray)
                 setLoadingNewComment(0)
@@ -100,8 +105,8 @@ export default function IndividualArticle () {
         <section className="indent-4 py-4 px-2">{articleData.body}</section>
         <section className="indent-4 p-2">Comments: </section>
         <form onSubmit={handleSubmit}>
-            <p><label htmlFor="commentBox">Post a comment as: {username}</label></p>
-            <textarea required id="commentBox" rows="4" cols="50"></textarea>
+            <label htmlFor="commentBox">Post a comment as: {username}</label>
+            <CommentBox postComment={postComment} setPostComment={setPostComment}/>
             <button type="submit" value="submit" >submit</button>
         </form>
         {loadingNewComment === 1 ? <p className="p-2">loading new comment...</p> : <></>}

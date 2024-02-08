@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
-import axios from "axios"
 import ArticleTile from "../components/ArticleTile"
-import api from "../utils/api";
+import { getAllArticles } from "../utils/api";
 
 
 export default function Articles () {
@@ -22,29 +21,16 @@ export default function Articles () {
     }
 
     useEffect(() => {
-        const getArticles = async () => {
-            try {
-                const response = await api.get(url)
-                let articles = response.data.articles
-                if(sort === 'created_at'){
-                    if(order === 'asc'){
-                        articles.sort((a, b) => Date.parse(a[sort]) - Date.parse(b[sort]))
-                    } else {
-                        articles.sort((a, b) => Date.parse(b[sort]) - Date.parse(a[sort]))
-                    }
-                } else {
-                    if(order === 'asc'){
-                        articles.sort((a, b) => a[sort] - b[sort])
-                    } else {
-                        articles.sort((a, b) => b[sort] - a[sort])
-                    }
-                }
-                setArticles(response.data.articles)
-            }catch(err) {
+        const call = async () => {
+            try{
+                const response = await getAllArticles(url, sort, order)
+                setArticles(response)
+            }catch(err){
                 console.log(err)
             }
         }
-        getArticles()
+        call()
+        
     }, [topic, sort, order])
 
     const handleNavigate = (event) => {

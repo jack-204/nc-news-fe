@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from "react"
-import axios from "axios"
-import api from "../utils/api"
+import {getCommentData, deleteCommentById} from "../utils/api"
 import { UserContext } from "../context/UserContext";
 
 export default function CommentTile ({comment}) {
@@ -16,7 +15,7 @@ export default function CommentTile ({comment}) {
     useEffect(() => {
         const getUserPicture = async () => {
             try {
-                const response = await api.get(`users/${comment.author}`)
+                const response = await getCommentData(comment.author)
                 setUserPicture(response.data.user.avatar_url)
             } catch (err){
                 console.log(err)
@@ -29,7 +28,7 @@ export default function CommentTile ({comment}) {
         setIsDeleted(1)
         const deleteComment = async () => {
             try {
-                const response = await api.delete(`/comments/${comment.comment_id}`)
+                const response = await deleteCommentById(comment.comment_id)
             } catch (err) {
                 console.log(err)
                 setIsDeleted(0)
