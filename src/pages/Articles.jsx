@@ -10,18 +10,22 @@ export default function Articles () {
     const [articles, setArticles] = useState([])
 
     const topic = searchParams.get('topic')
+    let url = 'articles'
 
+    if(topic) {
+        url = url + `?topic=${topic}`
+    }
     useEffect(() => {
         const getArticles = async () => {
             try {
-                const response = await api.get('articles')
+                const response = await api.get(url)
                 setArticles(response.data.articles)
             }catch(err) {
                 console.log(err)
             }
         }
         getArticles()
-    }, [])
+    }, [topic])
 
     
     return (
