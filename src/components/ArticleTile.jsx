@@ -22,6 +22,7 @@ export default function ArticleTile ({article}) {
                 <p>{article.author}</p>
                 <p>{date}, {time}</p>
                 <p>votes: {article.votes}</p>
+                <p>comments: {article.comment_count}</p>
             </div>
         </li>
     )
