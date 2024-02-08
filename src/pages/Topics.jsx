@@ -1,25 +1,34 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../utils/api";
 
 export default function Topics () {
+    const [topics, setTopics] = useState([])
+    useEffect(() => {
+        const getTopics = async () => {
+            try {
+                const response = await api.get('/topics')
+                setTopics(response.data.topics)
+            } catch(err) {
+                console.log(err)
+            }
+        }
+        getTopics()
+    },[])
+
     return (
         <>
         <p className="p-2">this is the topics page</p>
         <ul className="p-2">
-            <li key="t1">
-                <Link to="/articles?topic=t1">
-                    <span>t1</span>
-                </Link>
-            </li>
-            <li key="t2">
-                <Link to="/articles?topic=t2">
-                    <span>t2</span>
-                </Link>
-            </li>
-            <li key="t3">
-                <Link to="/articles?topic=t3">
-                    <span>t3</span>
-                </Link>
-            </li>
+            {topics.map((topic) => {
+                const url = `/articles?topic=${topic.slug}`
+                return (<li key={topic.slug} className="my-8 border-solid border-b">
+                    <Link to={url}>
+                        <p>{topic.slug}</p>
+                        <p>{topic.description}</p>
+                    </Link>
+                </li>)
+            })}
         </ul>
         </>
     )
