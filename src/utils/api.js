@@ -6,29 +6,31 @@ const api = axios.create({
 
 const getAllArticles = (url, sort, order) => {
 
-    const getArticles = async () => {
-        try {
-            const response = await api.get(url)
-            let articles = response.data.articles
-            if(sort === 'created_at'){
-                if(order === 'asc'){
-                    articles.sort((a, b) => Date.parse(a[sort]) - Date.parse(b[sort]))
-                } else {
-                    articles.sort((a, b) => Date.parse(b[sort]) - Date.parse(a[sort]))
-                }
-            } else {
-                if(order === 'asc'){
-                    articles.sort((a, b) => a[sort] - b[sort])
-                } else {
-                    articles.sort((a, b) => b[sort] - a[sort])
-                }
-            }
-            return(response.data.articles)
-        }catch(err) {
-            console.log(err)
-        }
-    }
-    return getArticles()
+    // const getArticles = async () => {
+    //     try {
+    //         const response = await api.get(url)
+    //         let articles = response.data.articles
+    //         if(sort === 'created_at'){
+    //             if(order === 'asc'){
+    //                 articles.sort((a, b) => Date.parse(a[sort]) - Date.parse(b[sort]))
+    //             } else {
+    //                 articles.sort((a, b) => Date.parse(b[sort]) - Date.parse(a[sort]))
+    //             }
+    //         } else {
+    //             if(order === 'asc'){
+    //                 articles.sort((a, b) => a[sort] - b[sort])
+    //             } else {
+    //                 articles.sort((a, b) => b[sort] - a[sort])
+    //             }
+    //         }
+    //         return(response.data.articles)
+    //     }catch(err) {
+    //         console.log(err)
+    //     }
+    // }
+    // return getArticles()
+
+    return api.get(url)
 }
     
 const incrementVotes = (amount,article_id) => {
