@@ -1,7 +1,12 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import axios from "axios"
 import api from "../utils/api"
+import { UserContext } from "../context/UserContext";
+
 export default function CommentTile ({comment}) {
+    const [isDeleted, setIsDeleted] = useState(0)
+    const [deleteError, setDeleteError] = useState(0)
+    const username = useContext(UserContext)
     const oldTime = comment.created_at
     let date = oldTime.substring(0, 10)
     let time = oldTime.substring(11, 16)
@@ -20,7 +25,23 @@ export default function CommentTile ({comment}) {
         getUserPicture()
     })
 
+    const handleDeleteComment = () => {
+        setIsDeleted(1)
+        const deleteComment = async () => {
+            try {
+                const response = await api.delete(`/comments/${comment.comment_id}`)
+            } catch (err) {
+                console.log(err)
+                setIsDeleted(0)
+                setDeleteError(1)
+            }
+        }
+        deleteComment()
+    }
+
     return(
+        <>
+        {isDeleted === 0 ? 
         <li key={comment.comment_id} className="m-2 p-2 grid grid-cols-5 grid-rows-1 border-solid border-2 rounded-md">
             
             <img 
@@ -33,10 +54,13 @@ export default function CommentTile ({comment}) {
                 <p className="mx-1">{comment.author}</p>
                 <p className="mx-1">{date}, {time}</p>
                 <p className="mx-1">votes: {comment.votes}</p>
+                {username === comment.author ? <button onClick={() => handleDeleteComment()}>delete</button> : <></>}
             </div>
-            
+            {deleteError === 1 ? <p className="text-red-600">could not be deleted, please try again</p> : <></>}
             <p className="col-span-2 row-span-3">{comment.body}</p>
             </div>
         </li>
+         : <p>comment# {comment.comment_id} has been deleted</p>}
+        </>
     )
 }
