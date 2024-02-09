@@ -22,7 +22,7 @@ export default function CommentTile ({comment}) {
             }
         }
         getUserPicture()
-    })
+    },[])
 
     const handleDeleteComment = () => {
         setIsDeleted(1)
@@ -53,13 +53,13 @@ export default function CommentTile ({comment}) {
                 <p className="mx-1">{comment.author}</p>
                 <p className="mx-1">{date}, {time}</p>
                 <p className="mx-1">votes: {comment.votes}</p>
-                {username === comment.author ? <button onClick={() => handleDeleteComment()}>delete</button> : <></>}
+                {username === comment.author ? <button className="border-2 border-red-600 rounded-md px-2"onClick={() => handleDeleteComment()}>delete</button> : <></>}
             </div>
             {deleteError === 1 ? <p className="text-red-600">could not be deleted, please try again</p> : <></>}
             <p className="col-span-2 row-span-3">{comment.body}</p>
             </div>
         </li>
-         : <p>comment# {comment.comment_id} has been deleted</p>}
+         : <p>comment #{comment.comment_id} has been deleted</p>}
         </>
     )
 }

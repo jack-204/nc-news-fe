@@ -120,9 +120,11 @@ export default function IndividualArticle () {
         <section className="indent-4 py-4 px-2">{articleData.body}</section>
         <section className="indent-4 p-2">Comments: </section>
         <form onSubmit={handleSubmit}>
-            <label htmlFor="commentBox">Post a comment as: {username}</label>
-            <CommentBox postComment={postComment} setPostComment={setPostComment}/>
-            <button type="submit" value="submit" >submit</button>
+            <section className="flex flex-col gap-4">
+                <label className="col-span-3 indent-4"htmlFor="commentBox">Post a comment as: {username}</label>
+                <CommentBox postComment={postComment} setPostComment={setPostComment}/>
+                <button type="submit" value="submit" className="mx-4 p-1 rounded-md bg-blue-500 text-black max-w-20">submit</button>
+            </section>
         </form>
         {loadingNewComment === 1 ? <p className="p-2">loading new comment...</p> : <></>}
         <ul>
