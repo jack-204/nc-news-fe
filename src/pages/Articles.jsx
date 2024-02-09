@@ -68,7 +68,7 @@ export default function Articles () {
                 <option value="votes">votes</option>
             </select>
             <button 
-            className="mx-4 p-1 rounded-md bg-red-500 text-black"
+            className="mx-4 p-1 rounded-md bg-blue-500 text-black"
             onClick={() => handleOrderChange()}>change order</button>
             <p>current order: {order}ending</p>
             </span>
