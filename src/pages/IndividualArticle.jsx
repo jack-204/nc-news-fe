@@ -14,24 +14,31 @@ export default function IndividualArticle () {
 
     const [articleNotFound, setArticleNotFound] = useState(0)
 
+    const [hasBeenVoted, setHasBeenVoted] = useState(0)
+
     //increment votes handling
     const changeVote = (amount) => {
-        const newvotes = {...articleData}
-        newvotes.votes += amount
-        setVoteError('')
-        const updateVotes = async (amount) => {
-            try {
-                incrementVotes(amount, article_id)
-            } catch(err){
-                console.log(err)
-                setVoteError('something went wrong, please try again')
-                console.log(amount)
-                newvotes.votes = newvotes.votes - amount
-                setArticleData(newvotes)
+        if(hasBeenVoted === amount){
+            setVoteError('you can only vote once!')
+        } else {
+            const newvotes = {...articleData}
+            newvotes.votes += amount
+            setVoteError('')
+            const updateVotes = async (amount) => {
+                try {
+                    incrementVotes(amount, article_id)
+                    setHasBeenVoted(hasBeenVoted + amount)
+                } catch(err){
+                    console.log(err)
+                    setVoteError('something went wrong, please try again')
+                    console.log(amount)
+                    newvotes.votes = newvotes.votes - amount
+                    setArticleData(newvotes)
+                }
             }
+            setArticleData(newvotes)
+            updateVotes(amount)
         }
-        setArticleData(newvotes)
-        updateVotes(amount)
         
     }
 

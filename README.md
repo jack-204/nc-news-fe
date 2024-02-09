@@ -9,5 +9,4 @@ Link to the back end repo: https://github.com/jack-204/nc-news
 minimum node version: v20.7.0
 
 to run locally: you will need git installed, run 'git clone https://github.com/jack-204/nc-news-fe.git'
-
 then run 'npm install' and 'npm run dev'
